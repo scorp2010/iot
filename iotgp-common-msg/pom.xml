@@ -1,0 +1,149 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>cn.inovance</groupId>
+  <artifactId>iotgp-common-msg</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>iotgp-common-msg</name>
+  <description>物联网通用支撑平台消息通信公共包</description>
+  <packaging>jar</packaging>
+  <properties>
+		<!-- 主要依赖库的版本定义 -->
+		<junit.version>4.11</junit.version>
+		<mina-core.version>2.0.7</mina-core.version>
+		<slf4j-log4j12.version>1.7.7</slf4j-log4j12.version>
+		<spring.version>4.0.3.RELEASE</spring.version>
+		<jackson.version>1.9.13</jackson.version>
+		<spring-data-redis.version>1.1.1.RELEASE</spring-data-redis.version>
+		<jedis.version>2.1.0</jedis.version>
+		<activemq.version>5.9.0</activemq.version>
+		<jsr250-api.version>1.0</jsr250-api.version>
+		<commons-lang3.version>3.3.1</commons-lang3.version>
+ 
+		<maven-shade-plugin.version>1.6</maven-shade-plugin.version>
+		<project.build.sourceEncoding>
+			UTF-8
+		</project.build.sourceEncoding>
+	</properties>
+
+	<!-- 发布jar -->
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>http://10.44.219.132:8081/nexus/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>http://10.44.219.132:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<dependencies>
+		<!-- 加入junit依赖包 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j-log4j12.version}</version>
+		</dependency>
+		
+		<!-- 加入mina依赖包 -->
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-core</artifactId>
+			<version>${mina-core.version}</version>
+		</dependency>
+
+		<!-- 加入spring测试依赖包 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- 加入json解析依赖包 -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-lgpl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+
+		<!-- 加入spring data redis依赖包 -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>${spring-data-redis.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>${jedis.version}</version>
+		</dependency>
+		
+		<!-- javax annotation依赖 -->
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
+			<version>${jsr250-api.version}</version>
+		</dependency>
+		<!-- 加入fastjson依赖包 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.37</version>
+		</dependency>
+	</dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
