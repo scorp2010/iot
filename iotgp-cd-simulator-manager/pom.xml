@@ -20,12 +20,12 @@
 	<dependencies>
 
 		<!-- iotgp-common -->
-		<dependency>
+<!-- 		<dependency>
 			<groupId>cn.inovance</groupId>
 			<artifactId>iotgp-common-msg</artifactId>
 			<version>${iotgp-common.version}</version>
 		</dependency>
-
+ -->
 		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
