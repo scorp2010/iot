@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	default-lazy-init="true">
+
+	<!-- CdsmClient -->
+	<bean id="cdsmClient" class="cn.inovance.iotgp.cdSimulator.client.CdsmClient">
+		<property name="useLog" value="${cdsm.useLog}" /><!--是否使用默认的日志 -->
+		<property name="idleTime" value="${cdsm.idleTime}" /><!--空闲超时间隔时间(秒) -->
+		<property name="host" value="${cdsm.host}" /><!--cdsm IP -->
+		<property name="port" value="${cdsm.port}" /><!--cdsm Port -->
+		<property name="ioHandler" ref="cdsmClientIoHandler" /><!--IO处理器 -->
+	</bean>
+
+	<!-- CdsmClient 消息处理器 -->
+	<bean id="cdsmClientIoHandler" scope="singleton"
+		class="cn.inovance.iotgp.cdSimulator.handler.CdsmClientIoHandler">
+		<property name="messageProcessorMap">
+			<map>
+				<entry key="LOGIN_RSP" value-ref="cdsmLoginRspProcessor" />
+				<entry key="HEARTBEAT_RSP" value-ref="cdsmHeartbeatRspProcessor" />
+				<entry key="CONFIG_NOTIFY" value-ref="cdsmConfigNotifyProcessor" />
+				<entry key="RUNSTATUS_RSP" value-ref="cdsmRunStatusRspProcessor" />
+				<entry key="LOGIN_TEST_RESULT_REQ" value-ref="cdsmLoginTestResultReqProcessor" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- CdSimulatorMgr -->
+	<bean id="cdSimulatorMgr" class="cn.inovance.iotgp.cdSimulator.client.CdSimulatorMgr">
+		<property name="useLog" value="${cdag.useLog}" /><!--是否使用默认的日志 -->
+		<property name="idleTime" value="${cdag.idleTime}" /><!--空闲超时间隔时间(秒) -->
+		<property name="host" value="${cdag.host}" /><!--cdsm IP -->
+		<property name="port" value="${cdag.port}" /><!--cdsm Port -->
+		<property name="ioHandler" ref="nodeClientIoHandler" /><!--IO处理器 -->
+		<property name="executorNum" value="${cdsm.executorNum}" /><!--IO处理器 -->
+		<property name="connectTimeout" value="${cdag.connectTimeout}" /><!--IO处理器 -->
+	</bean>
+
+	<!-- NodeClient 消息处理器 -->
+	<bean id="nodeClientIoHandler" scope="singleton"
+		class="cn.inovance.iotgp.cdSimulator.handler.NodeClientIoHandler">
+		<property name="messageProcessorMap">
+			<map>
+				<!-- 登陆响应消息 -->
+				<entry key="0X0011" value-ref="loginRspProcessor" />
+				<!-- 心跳响应消息 -->
+				<entry key="0X0013" value-ref="heartbeatRspProcessor" />
+				<!-- 服务器IP/DNS更新消息 -->
+				<entry key="0X0014" value-ref="ipDomainUpdateNotifyProcessor" />
+				<!-- 软件更新通知消息 
+				<entry key="0X0021" value-ref="softwareUpdateNotifyProcessor" />
+				-->
+				<!-- 系统参数更新请求消息 -->
+				<entry key="0X0031" value-ref="paramUpdateReqProcessor" />
+				<!-- 采集设备运行状态请求消息 -->
+				<entry key="0X0033" value-ref="cdRunStatusReqProcessor" />
+				<!-- 命令行请求消息 -->
+				<entry key="0X0040" value-ref="cmdChanelReqProcessor" />
+				<!-- 事件确认消息 -->
+				<entry key="0x0062" value-ref="ctrlEventRspProcessor" />
+				<!-- 过程记录通知消息 -->
+				<entry key="0x0063" value-ref="ctrlProcedureRecordNotifyProcessor" />
+				<!-- 实时数据连接请求消息 -->
+				<entry key="0x0064" value-ref="startRTDataReqProcessor" />
+				<!-- 实时数据停止上报请求消息 -->
+				<entry key="0x0066" value-ref="stopRTDataReqProcessor" />
+				<!-- 视频连接请求消息 -->
+				<entry key="0x0070" value-ref="videoEstablishReqProcessor" />
+				<!-- 视频播放停止通知消息 -->
+				<entry key="0x0073" value-ref="videoStopReqProcessor" />
+				<!-- 摄像头抓拍请求 -->
+				<entry key="0x0078" value-ref="photoCaptureReqProcessor" />
+				<!-- 音频连接请求消息 -->
+				<entry key="0x0080" value-ref="audioEstablishReqProcessor" />
+				<!-- 音频播放停止通知消息 -->
+				<entry key="0x0084" value-ref="audioStopReqProcessor" />
+				<!-- 资源文件列表请求消息 -->
+				<entry key="0x0090" value-ref="fileListReqProcessor" />
+				<!-- 资源文件上/下载通知消息 -->
+				<entry key="0x0092" value-ref="fileTransferNofityProcessor" />
+				<!-- 获取播放列表响应消息 -->
+				<entry key="0x0026" value-ref="getPlaylistRspProcessor" />
+				<!-- 更新完成响应消息 -->
+				<entry key="0x0028" value-ref="updateCompleteRspProcessor" />
+				<!-- 新播放列表更新消息 -->
+				<entry key="0x0029" value-ref="newPlaylistNotifyProcessor" />
+				<!-- 开始上传过程文件消息 -->
+				<entry key="0x0094" value-ref="startTransferProcedureFileProcessor" />
+				<!-- 停止上传过程文件消息 -->
+				<entry key="0x0096" value-ref="stoptTransferProcedureFileProcessor" />
+
+				<entry key="0X0051" value-ref="tdCmdTransferReqProcessor" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- TempClient 消息处理器 -->
+	<bean name="tempClientIoHandler" scope="singleton"
+		class="cn.inovance.iotgp.cdSimulator.handler.TempClientIoHandler">
+		<property name="tempClientProcessorMap">
+			<map>
+				<!-- 数据心跳响应消息 -->
+				<entry key="0x0077" value-ref="dataConnHeartbeatRspProcessor" />
+				<!-- 视频头响应消息 -->
+				<entry key="0x0075" value-ref="videoHeaderRspProcessor" />
+				<!-- 音频头响应消息 -->
+				<entry key="0x0082" value-ref="audioHeaderRspProcessor" />
+			</map>
+		</property>
+		<property name="gftpCommandProcessorMap">
+			<map>
+				<!-- 采集设备鉴权响应 -->
+				<entry key="0X02" value-ref="gftpLoginRspProcessor" />
+				<!-- 开始传输响应 -->
+				<entry key="0X04" value-ref="startTransferRspProcessor" />
+				<!-- 文件数据传输 -->
+				<entry key="0X05" value-ref="fileDataTransferProcessor" />
+				<!-- 文件传输结束通知 -->
+				<entry key="0X06" value-ref="fileTransferEndNotifyProcessor" />
+				<!-- 文件传输结束响应 -->
+				<entry key="0X07" value-ref="fileTransferEndRspProcessor" />
+			</map>
+		</property>
+	</bean>
+
+</beans>

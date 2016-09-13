@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	default-lazy-init="true">
+
+	<!-- CdsmServer -->
+	<bean id="cdsmServer" class="cn.inovance.iotgp.cdsm.server.CdsmServer">
+		<property name="useLog" value="${socket_useLog}" /><!--是否使用默认的日志 -->
+		<property name="idleTime" value="${socket_idleTime}" /><!--空闲超时间隔时间(秒) -->
+		<property name="host" value="${external_host}" /><!--绑定主机IP -->
+		<property name="port" value="${external_port}" /><!--绑定主机Port -->
+		<property name="executerNum" value="${socket_executerNum}" /><!--处理线程数 -->
+		<property name="processorNum" value="${socket_processorNum}" /><!--IO线程数 -->
+		<property name="serverName" value="cdsm" /><!--服务器名称 -->
+		<property name="socketIoHandler" ref="cdsmServerIoHandler" /><!--IO处理器 -->
+	</bean>
+
+	<!--CdsmServer消息处理器 -->
+	<bean id="cdsmServerIoHandler" scope="singleton"
+		class="cn.inovance.iotgp.cdsm.server.CdsmServerIoHandler">
+		<property name="messageProcessorMap">
+			<map>
+				<entry key="LOGIN_REQ" value-ref="loginReqProcessor" />
+				<entry key="HEARTBEAT_REQ" value-ref="heartbeatReqProcessor" />
+				<entry key="CONFIG_RSP" value-ref="configRsqProcessor" />
+				<entry key="RUNSTATUS_NOTIFY" value-ref="runStatusNotifyProcessor" />
+				<entry key="LOGIN_TEST_RESULT_RSP" value-ref="loginTestResultRspProcessor" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- websocket消息处理器 -->
+	<bean name="websocketMessageProcessorMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map key-type="java.lang.String">
+				<entry key="GET_LOGIN_TEST_RESULT_REQ" value-ref="getLoginTestResultReqProcessor"></entry>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+</beans>
