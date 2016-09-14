@@ -25,7 +25,7 @@
 	</dependency>
 		
 		<!-- iotgp-common -->
-	<!-- 	<dependency>
+		<dependency>
 			<groupId>cn.inovance</groupId>
 			<artifactId>iotgp-common-msg</artifactId>
 			<version>${iotgp-common.version}</version>
@@ -34,7 +34,7 @@
 			<groupId>cn.inovance</groupId>
 			<artifactId>iotgp-common-db</artifactId>
 			<version>${iotgp-common.version}</version>
-		</dependency> -->
+		</dependency> 
 
 		<!-- mysql驱动 -->
 		<dependency>
