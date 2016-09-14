@@ -18,11 +18,12 @@
 	</properties>
 
 	<dependencies>
-	<dependency>
+	
+<!-- 	<dependency>
 	  <groupId>com.csvreader</groupId>
 	  <artifactId>javacsv</artifactId>
 	  <version>1.0</version>
-	</dependency>
+	</dependency> -->
 		
 		<!-- iotgp-common -->
 		<dependency>
